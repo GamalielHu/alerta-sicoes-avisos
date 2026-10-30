@@ -1,6 +1,7 @@
 name: Avisos SICOES
 
-# Revisa el SICOES cada 15 minutos y avisa las convocatorias nuevas por ntfy (sin gastar batería del celular).
+# Revisa el SICOES cada 15 minutos y avisa las convocatorias nuevas por Firebase y ntfy (sin gastar batería del celular).
+# El disparo puntual cada 15 min lo hace cron-job.org con workflow_dispatch; el schedule de abajo es respaldo.
 # Se ejecuta también al cambiar algo en servidor/ (por ejemplo, la lista de entidades).
 on:
   schedule:
