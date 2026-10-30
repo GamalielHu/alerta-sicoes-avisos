@@ -1,0 +1,51 @@
+name: Avisos SICOES
+
+# Revisa el SICOES cada 15 minutos y avisa las convocatorias nuevas por ntfy (sin gastar batería del celular).
+# Se ejecuta también al cambiar algo en servidor/ (por ejemplo, la lista de entidades).
+on:
+  schedule:
+    - cron: "*/15 * * * *"
+  push:
+    branches: [main]
+    paths: ["servidor/**", ".github/workflows/avisos.yml"]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: avisos
+  cancel-in-progress: false
+
+jobs:
+  revisar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      HAY_FIREBASE: ${{ secrets.FIREBASE_CUENTA != '' && 'si' || 'no' }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Traer el estado anterior (qué ya se avisó)
+        run: |
+          git fetch -q origin avisos-estado && git show origin/avisos-estado:estado.json > servidor/estado.json || echo "Sin estado previo: primera carga"
+
+      - name: Librería de Google para Firebase
+        if: ${{ env.HAY_FIREBASE == 'si' }}
+        run: pip install -q google-auth requests
+
+      - name: Revisar el SICOES
+        env:
+          FIREBASE_CUENTA: ${{ secrets.FIREBASE_CUENTA }}
+          NTFY_TEMA: ${{ secrets.NTFY_TEMA || 'alerta-sicoes-kowf4ni1ytu0' }}
+          # Al cambiar algo en servidor/ se manda un aviso de prueba para confirmar que llegan
+          AVISO_PRUEBA: ${{ github.event_name == 'push' && '1' || '0' }}
+        run: python3 servidor/vigilar.py
+
+      - name: Guardar el estado
+        if: always()
+        run: |
+          mkdir -p /tmp/estado && cp servidor/estado.json /tmp/estado/ && cd /tmp/estado
+          git init -q -b avisos-estado && git config user.name GamalielHu && git config user.email jhuasco8@gmail.com
+          git add -A && git commit -qm "Estado de avisos"
+          git push -q -f "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}" avisos-estado
