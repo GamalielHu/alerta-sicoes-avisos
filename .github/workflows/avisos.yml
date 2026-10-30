@@ -31,6 +31,9 @@ jobs:
         run: |
           git fetch -q origin avisos-estado && git show origin/avisos-estado:estado.json > servidor/estado.json || echo "Sin estado previo: primera carga"
 
+      - name: Firebase configurado
+        run: echo "FIREBASE_CUENTA presente: $HAY_FIREBASE"
+
       - name: Librería de Google para Firebase
         if: ${{ env.HAY_FIREBASE == 'si' }}
         run: pip install -q google-auth requests
