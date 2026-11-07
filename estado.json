@@ -1,0 +1,30 @@
+{
+ "avisados": {
+  "gobierno autonomo municipal de la paz|O|26-1201-00-1636277-2-2": "2026-10-27 07:12",
+  "gobierno autonomo municipal de la paz|O|26-1201-00-1685107-2-1": "2026-10-27 07:12",
+  "gobierno autonomo municipal de la paz|O|26-1201-00-1679960-2-1": "2026-10-27 07:12",
+  "gobierno autonomo municipal de la paz|O|26-1201-00-1699553-1-1": "2026-10-27 07:12",
+  "gobierno autonomo municipal de la paz|O|26-1201-00-1636154-2-3": "2026-10-27 07:12",
+  "gobierno autonomo municipal de la paz|O|26-1201-00-1681945-2-1": "2026-10-27 07:12",
+  "gobierno autonomo municipal de la paz|O|26-1201-00-1696462-1-1": "2026-10-27 07:12",
+  "servicio departamental de gestion social - potosi|O|exacta|26-0905-01-1701946-1-1": "2026-10-28 17:52",
+  "servicio departamental de gestion social - potosi|O|exacta|26-0905-01-1694495-2-1": "2026-10-28 17:52",
+  "servicio departamental de gestion social - potosi|O|exacta|26-0905-01-1695076-1-2": "2026-10-28 17:52"
+ },
+ "iniciadas": [
+  "gobierno autonomo municipal de la paz|O",
+  "servicio departamental de gestion social - potosi|O|exacta"
+ ],
+ "ultima_revision": "2026-11-07 11:25",
+ "registro": [
+  "Servicio Departamental De Gestion Social - Potosi: 0 vigentes",
+  "nuevas: 0, avisadas: 0"
+ ],
+ "entidades": [
+  {
+   "entidad": "Servicio Departamental De Gestion Social - Potosi",
+   "tipos": "O",
+   "exacta": true
+  }
+ ]
+}
