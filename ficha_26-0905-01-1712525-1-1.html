@@ -1,0 +1,107 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Ficha del Proceso</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+
+    <style>
+        body{
+            background-color: #dcdcdc !important;
+        }
+        .uppercap{text-transform: uppercase;}
+        .text-red{color: red; }
+    </style>
+    <link rel="stylesheet" href="/css/external/bootstrap/bootstrap.min.css">
+    <script src="/lib/js/external/jquery/jquery.min.js?v=0.0.3"></script>
+    <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+    <script>
+        let formularioEnviado = false;
+        let turnstileWidgetId = null;
+
+        window.addEventListener('load', function() {
+                        turnstileWidgetId = turnstile.render('.cf-turnstile', {
+                sitekey: '0x4AAAAAACHQnmr7z-aPbV4e',
+                theme: 'light',
+                action: 'sic-descargaFicha',
+                callback: function(token) {}
+            });
+                    });
+
+        function enviaFormulario() {
+            if (formularioEnviado) {
+                return false;
+            }
+
+                        const response = turnstile.getResponse(turnstileWidgetId);
+            if (!response) {
+                $('#mensajeError').html('Por favor, complete la verificación de seguridad');
+                return false;
+            }
+            
+            let boton = document.getElementById('btnDescargar');
+            boton.disabled = true;
+            boton.classList.add('disabled');
+            boton.innerHTML = 'Descargando...';
+
+            formularioEnviado = true;
+
+            document.getElementById('formulario').submit();
+
+                        setTimeout(function() {
+                if (turnstileWidgetId !== null) {
+                    try {
+                        turnstile.remove(turnstileWidgetId);
+                        turnstileWidgetId = null;
+
+                        // Eliminar el contenedor del DOM completamente
+                        const container = document.querySelector('.cf-turnstile');
+                        if (container && container.parentNode) {
+                            container.parentNode.removeChild(container);
+                        }
+                    } catch(e) {
+                        alert('Error removiendo widget');
+                    }
+                }
+            }, 1000);
+                    }
+    </script>
+</head>
+<body>
+<br>
+<form id="formulario" action="descargaFicha.php" method="post" >
+    <input type="hidden" name="token" value="284352008993f08ba2195b3b52adbd7f8968fe720506e7e7c5431c87666715ce">
+    <div class="col-lg-4 col-lg-offset-4 col-sm-6 col-sm-offset-3 col-md-6 col-md-offset-3 col-xs-12">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h3 class="panel-title">Descargar Ficha</h3>
+            </div>
+            <div class="panel-body">
+                <b>Complete la verificación de seguridad y presione el botón para descargar la ficha del proceso con CUCE: 26-0905-01-1712525-1-1</b>
+                <input type="hidden" name="cp" value="26-0905-01-1712525-1-1"><br><br>
+                <div style="text-align: center;">
+                                            <div style="text-align: center;">
+                            <div class="cf-turnstile"
+                                 data-theme="light"
+                                 style="display: inline-block;">
+                            </div>
+                        </div>
+                                    </div>
+                <div style="text-align: center;">
+                    <span id="mensajeError" class="text-red"></span>
+                </div>
+                <div style="text-align: center">
+                    <button type="button"
+                            id="btnDescargar"
+                            onclick="enviaFormulario()"
+                            class="btn btn-primary">
+                        Descargar Ficha
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+</body>
+</html>
