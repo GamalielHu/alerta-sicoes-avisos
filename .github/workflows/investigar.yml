@@ -1,0 +1,19 @@
+name: Investigar ficha SICOES
+on:
+  push:
+    branches: [investigar]
+permissions:
+  contents: write
+jobs:
+  investigar:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Investigar
+        run: python3 investigar/ficha.py > /tmp/salida.txt 2>&1 || true
+      - name: Guardar
+        if: always()
+        run: |
+          mkdir -p /tmp/res && cp /tmp/salida.txt /tmp/res/ && cd /tmp/res
+          git init -q -b resultado-investigar && git config user.name GamalielHu && git config user.email jhuasco8@gmail.com
+          git add -A && git commit -qm resultado && git push -q -f "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}" resultado-investigar
